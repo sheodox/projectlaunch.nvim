@@ -2,7 +2,9 @@
 
 This is a [Neovim](https://neovim.io/) plugin for running commands in your project. Have a bunch of commands you need to run to boot a site and kick off some build processes? Make a command group for them and start them all at once!
 
-![Preview](media/demo.mp4)
+_This currently requires a fairly new version of Neovim 0.7.0 for the Lua autocmd API._
+
+https://user-images.githubusercontent.com/3468630/159603708-0045b827-4c51-42d6-afbe-28362f391989.mp4
 
 ## Configuration
 
