@@ -13,15 +13,23 @@ M.jobs = {}
 local split_win = nil
 local floating_menu = nil
 
+local function assert_valid_win_type(win_type)
+	assert(
+		win_type == "float" or win_type == "split",
+		'win_type must be "split" or "float", got "' .. tostring(win_type) .. '"'
+	)
+end
+
 function M.spawn_term(command, opts)
 	local job = Job:new(command, opts)
 	table.insert(M.jobs, job)
 end
 
 function M.show_term(win_type)
-	local job = M.jobs[viewing_index[win_type]]
+	assert_valid_win_type(win_type)
 
 	if win_type == "split" then
+		local job = M.jobs[viewing_index[win_type]]
 		api.nvim_win_set_buf(split_win, job.buf)
 
 		-- InteractiveMenu handles these hotkeys for the floating window, not so much for the split
@@ -40,16 +48,9 @@ function M.show_term(win_type)
 			noremap = true,
 			buffer = true,
 		})
-	else
+	elseif win_type == "float" then
 		M.show_float()
 	end
-end
-
-local function assert_valid_win_type(win_type)
-	assert(
-		win_type == "float" or win_type == "split",
-		'win_type must be "split" or "float", got "' .. tostring(win_type) .. '"'
-	)
 end
 
 function M.next_terminal(win_type)
@@ -61,6 +62,10 @@ function M.next_terminal(win_type)
 	end
 
 	M.show_term(win_type)
+end
+
+function M.scroll_to_bottom()
+	api.nvim_win_set_cursor(0, { api.nvim_buf_line_count(0), 0 })
 end
 
 function M.prev_terminal(win_type)
@@ -92,7 +97,7 @@ function M.toggle_float()
 	end
 
 	if floating_menu == nil then
-		M.show_float()
+		M.show_term("float")
 	else
 		floating_menu:destroy()
 		floating_menu = nil
@@ -121,6 +126,7 @@ function M.show_split(job_index)
 		split_win = win.create_split_window()
 	end
 	M.show_term("split")
+	M.scroll_to_bottom()
 end
 
 function M.show_float(job_index)
@@ -171,6 +177,8 @@ function M.show_float(job_index)
 
 	floating_menu:render_header({ job.name, "(" .. job_index .. "/" .. #M.jobs .. ")" })
 	floating_menu:replace_body_buffer(job.buf)
+
+	M.scroll_to_bottom()
 end
 
 -- when a window is closed, if it's one of the terminals we need to nil it
