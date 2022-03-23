@@ -80,7 +80,7 @@ end
 
 local function has_jobs()
 	if not M.has_jobs() then
-		print("ProjectLaunch: No commands are running.")
+		util.log("No commands are running.")
 		return false
 	end
 	return true

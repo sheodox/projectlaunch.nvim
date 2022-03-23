@@ -27,12 +27,12 @@ end
 local function prompt_launch()
 	local cfg = config.get_project_config()
 	if cfg == nil then
-		print("A .projectlaunch.json file was not found at " .. config.get_project_root())
+		util.log("A .projectlaunch.json file was not found at " .. config.get_project_root())
 		return
 	end
 
 	if #cfg.commands < 0 then
-		print("No commands found in .projectlaunch.json")
+		util.log("No commands found in .projectlaunch.json")
 		return
 	end
 
@@ -88,10 +88,12 @@ end
 
 local function restart_job(data)
 	term.restart_job(data.job)
+	util.log("Restarted '" .. data.job.name .. "'")
 end
 
 local function kill_job(data)
 	data.job:kill()
+	util.log("Killed '" .. data.job.name .. "'")
 end
 
 function M.render_menu()

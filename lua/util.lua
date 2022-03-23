@@ -62,4 +62,8 @@ function M.pad_center(str1, str2, win_width)
 	return str1 .. string.rep(" ", shift) .. str2
 end
 
+function M.log(str)
+	print("ProjectLaunch: " .. str)
+end
+
 return M
