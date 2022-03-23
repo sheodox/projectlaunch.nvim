@@ -2,6 +2,7 @@
 
 This is a [Neovim](https://neovim.io/) plugin for running commands in your project. Have a bunch of commands you need to run to boot a site and kick off some build processes? Make a command group for them and start them all at once!
 
+![Preview](media/demo.mp4)
 
 ## Configuration
 
