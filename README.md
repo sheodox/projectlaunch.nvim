@@ -29,8 +29,8 @@ interface ProjectLaunchConfig {
         { "name": "Start", "cmd": "npm run dev", "groups": ["dev"] },
         { "name": "Build frontend", "cmd": "npm run build-frontend:dev", "groups": ["dev"] },
         { "name": "Build server", "cmd": "npm run build-server:dev", "groups": ["dev"] },
-        { "name": "Lint frontend", "cmd": "npm run lint-server:dev", "groups": ["lint", "test"] },
-        { "name": "Lint server", "cmd": "npm run build-server:dev", "groups": ["lint", "test"] },
+        { "name": "Lint frontend", "cmd": "npm run lint-frontend:dev", "groups": ["lint", "test"] },
+        { "name": "Lint server", "cmd": "npm run lint-server:dev", "groups": ["lint", "test"] },
         { "name": "Test", "cmd": "npm test", "groups": ["test"] }
     ]
 }
