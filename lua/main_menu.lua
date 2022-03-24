@@ -26,32 +26,47 @@ end
 
 local function prompt_launch()
 	local cfg = config.get_project_config()
-	if cfg == nil then
-		util.log("A .projectlaunch.json file was not found at " .. config.get_project_root())
-		return
-	end
-
-	if #cfg.commands < 0 then
-		util.log("No commands found in .projectlaunch.json")
-		return
-	end
-
+	local ecosystem_cfg = config.get_ecosystem_configs()
 	local prompt_menu = nil
 
+	if cfg == nil and not util.table_has_items(ecosystem_cfg) then
+		util.log(
+			"No .projectlaunch.json file or supported ecosystem specific configuration files were found at "
+				.. config.get_project_root()
+		)
+		return
+	end
+
 	local lines = {}
-	if #cfg.groups > 0 then
-		table.insert(lines, { nil, "Groups" })
+
+	if cfg ~= nil then
+		if #cfg.commands < 0 then
+			util.log("No commands found in .projectlaunch.json")
+		else
+			if #cfg.groups > 0 then
+				table.insert(lines, { nil, "Groups" })
+
+				for _, group in ipairs(cfg.groups) do
+					table.insert(lines, { { group = group }, "  " .. group })
+				end
+			end
+
+			if #cfg.commands > 0 then
+				table.insert(lines, { nil, "Commands" })
+
+				for _, command in ipairs(cfg.commands) do
+					table.insert(lines, { { command = command }, "  " .. command.name })
+				end
+			end
+		end
 	end
 
-	for _, group in ipairs(cfg.groups) do
-		table.insert(lines, { { group = group }, "  " .. group })
-	end
+	for ecosystem_name, ecosystem_config in pairs(ecosystem_cfg) do
+		table.insert(lines, { nil, ecosystem_name })
 
-	if #cfg.commands > 0 then
-		table.insert(lines, { nil, "Commands" })
-	end
-	for _, command in ipairs(cfg.commands) do
-		table.insert(lines, { { command = command }, "  " .. command.name })
+		for _, command in ipairs(ecosystem_config.commands) do
+			table.insert(lines, { { command = command }, "  " .. command.name })
+		end
 	end
 
 	local function spawn(data)
@@ -87,8 +102,17 @@ local function show_in_split(data)
 end
 
 local function restart_job(data)
+	-- restarting a job will briefly close the menu (new window opened to create a terminal
+	-- will close the menu because of the BufLeave autocmd, keep track of the cursor so
+	-- we can reopen the menu in the same place they were)
+	local menu_cursor_position = vim.api.nvim_win_get_cursor(0)
 	term.restart_job(data.job)
 	util.log("Restarted '" .. data.job.name .. "'")
+
+	--  spawning the new job requires creating a new window (can't open a terminal in a dirty buffer)
+	--  so we need to manually reopen the main menu
+	M.toggle_main_menu()
+	vim.api.nvim_win_set_cursor(0, menu_cursor_position)
 end
 
 local function kill_job(data)
@@ -141,7 +165,7 @@ function M.toggle_main_menu()
 				p = { handler = prompt_launch, with_row = false, destroy = true },
 				f = { handler = show_in_float, destroy = true },
 				s = { handler = show_in_split, destroy = true },
-				R = { handler = restart_job, destroy = false },
+				R = { handler = restart_job },
 				X = { handler = kill_job },
 			},
 		})

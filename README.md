@@ -2,6 +2,8 @@
 
 This is a [Neovim](https://neovim.io/) plugin for running commands in your project. Have a bunch of commands you need to run to boot a site and kick off some build processes? Make a command group for them and start them all at once!
 
+For Nodejs projects this will also list your `package.json` file's scripts to be run. I'm open to PRs adding support for more languages/ecosystem specific command registries.
+
 _This currently requires a fairly new version of Neovim 0.7.0 for the Lua autocmd API._
 
 https://user-images.githubusercontent.com/3468630/159603708-0045b827-4c51-42d6-afbe-28362f391989.mp4
@@ -78,5 +80,4 @@ Terminals
 ### Goals
 
 Eventually I want this to...
-* be able to read `package.json` scripts (or other language/ecosystem specific command lists) and offer those as options to run.
 * look for your project root. Right now it assumes `cwd` is the root of your project.

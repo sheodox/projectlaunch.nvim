@@ -12,6 +12,13 @@ function M.table_contains(tbl, item)
 	return false
 end
 
+function M.table_has_items(tbl)
+	for _, _ in pairs(tbl) do
+		return true
+	end
+	return false
+end
+
 function M.remove_item(tbl, item)
 	local new_table = {}
 	for _, value in ipairs(tbl) do

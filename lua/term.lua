@@ -125,6 +125,7 @@ function M.show_split(job_index)
 	if split_win == nil then
 		split_win = win.create_split_window()
 	end
+
 	M.show_term("split")
 	M.scroll_to_bottom()
 end
@@ -181,13 +182,15 @@ function M.show_float(job_index)
 	M.scroll_to_bottom()
 end
 
--- when a window is closed, if it's one of the terminals we need to nil it
--- out so it can be recreated when it it's toggled again
 api.nvim_create_autocmd("WinClosed", {
 	group = util.augroup,
 	callback = function()
-		local closing_win = api.nvim_get_current_win()
-		if closing_win == split_win then
+		-- WinClosed happens after a window closes, so we can't check
+		-- against the current window, as it won't be the split window
+		local open_wins = api.nvim_list_wins()
+
+		if not util.table_contains(open_wins, split_win) then
+			-- this lets us know we need to recreate the split when it's toggled next
 			split_win = nil
 		end
 	end,
