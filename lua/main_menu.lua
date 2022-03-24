@@ -6,7 +6,6 @@ local term = require("term")
 
 local main_menu = nil
 local max_menu_width = 50
-local max_menu_text_width = 50
 local max_menu_height = 30
 
 function M.launch_group(group)
@@ -139,11 +138,14 @@ function M.render_menu()
 			index = job_index,
 			job = job,
 		}
-		table.insert(status_lines, { row_data, job.name .. "  -  (" .. tostring(status) .. ")" })
+		table.insert(status_lines, {
+			row_data,
+			util.justify(job.name, "(" .. tostring(status) .. ")", max_menu_width),
+		})
 	end
 
 	if #term.jobs == 0 then
-		table.insert(status_lines, { nil, util.center(" --  Nothing is running, press p -- ", max_menu_text_width) })
+		table.insert(status_lines, { nil, util.center("--  Nothing is running, press p --", max_menu_width) })
 	end
 
 	main_menu:render_body(status_lines)

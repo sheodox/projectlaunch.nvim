@@ -64,7 +64,7 @@ function M.center(str, win_width)
 	local shift = math.floor(win_width / 2) - math.floor(string.len(str) / 2)
 	return string.rep(" ", shift) .. str
 end
-function M.pad_center(str1, str2, win_width)
+function M.justify(str1, str2, win_width)
 	local shift = win_width - string.len(str1) - string.len(str2)
 	return str1 .. string.rep(" ", shift) .. str2
 end
