@@ -81,3 +81,5 @@ Terminals
 
 Eventually I want this to...
 * look for your project root. Right now it assumes `cwd` is the root of your project.
+* support more alternative command sources than just `package.json`.
+* have tests!
