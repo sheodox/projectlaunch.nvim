@@ -109,11 +109,11 @@ function M.toggle_split()
 		return
 	end
 
-	if split_win == nil then
-		M.show_split()
-	else
+	if split_win and vim.api.nvim_win_is_valid(split_win) then
 		api.nvim_win_close(split_win, true)
 		split_win = nil
+	else
+		M.show_split()
 	end
 end
 
@@ -122,7 +122,7 @@ function M.show_split(job_index)
 		viewing_index.split = util.clamp(job_index, 0, #M.jobs)
 	end
 
-	if split_win == nil then
+	if not (split_win and vim.api.nvim_win_is_valid(split_win)) then
 		split_win = win.create_split_window()
 	end
 
@@ -182,20 +182,6 @@ function M.show_float(job_index)
 	M.scroll_to_bottom()
 end
 
-api.nvim_create_autocmd("WinClosed", {
-	group = util.augroup,
-	callback = function()
-		-- WinClosed happens after a window closes, so we can't check
-		-- against the current window, as it won't be the split window
-		local open_wins = api.nvim_list_wins()
-
-		if not util.table_contains(open_wins, split_win) then
-			-- this lets us know we need to recreate the split when it's toggled next
-			split_win = nil
-		end
-	end,
-})
-
 function M.restart_job(old_job)
 	if old_job.running then
 		old_job:kill()
@@ -218,7 +204,7 @@ function M.get_active_window_type()
 	-- floating menus cannot be open and not be focused, if a floating menu terminal is open it's all there is
 	if floating_menu ~= nil then
 		return "float"
-	elseif split_win ~= nil then
+	elseif split_win and vim.api.nvim_win_is_valid(split_win) then
 		return "split"
 	end
 end
