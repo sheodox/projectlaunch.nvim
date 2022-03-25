@@ -1,4 +1,4 @@
-local util = require("util")
+local util = require("projectlaunch.util")
 local api = vim.api
 
 local function set_buffer_lines(buf, lines, win)

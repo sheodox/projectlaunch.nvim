@@ -1,8 +1,8 @@
 local M = {}
-local Job = require("jobs")
-local util = require("util")
-local InteractiveMenu = require("interactive_menu")
-local win = require("win")
+local Job = require("projectlaunch.jobs")
+local util = require("projectlaunch.util")
+local InteractiveMenu = require("projectlaunch.interactive_menu")
+local win = require("projectlaunch.win")
 local api = vim.api
 
 local viewing_index = {

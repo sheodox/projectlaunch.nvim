@@ -1,6 +1,6 @@
 local M = {}
-local term = require("term")
-local main_menu = require("main_menu")
+local term = require("projectlaunch.term")
+local main_menu = require("projectlaunch.main_menu")
 
 -- show/hide the main menu, all things can start from here
 M.toggle_main_menu = main_menu.toggle_main_menu

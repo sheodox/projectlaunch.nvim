@@ -1,6 +1,6 @@
 local M = {}
-local path = require("path")
-local util = require("util")
+local path = require("projectlaunch.path")
+local util = require("projectlaunch.util")
 
 local cached_config = nil
 local cached_ecosystem_specific_configs = nil

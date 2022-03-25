@@ -1,6 +1,6 @@
-local config = require("config")
-local win = require("win")
-local util = require("util")
+local config = require("projectlaunch.config")
+local win = require("projectlaunch.win")
+local util = require("projectlaunch.util")
 local api = vim.api
 
 local term_name_prefix = "ProjectLaunch terminal - "

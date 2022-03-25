@@ -1,8 +1,8 @@
 local M = {}
-local config = require("config")
-local util = require("util")
-local InteractiveMenu = require("interactive_menu")
-local term = require("term")
+local config = require("projectlaunch.config")
+local util = require("projectlaunch.util")
+local InteractiveMenu = require("projectlaunch.interactive_menu")
+local term = require("projectlaunch.term")
 
 local main_menu = nil
 local max_menu_width = 50
