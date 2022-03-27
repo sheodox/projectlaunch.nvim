@@ -93,7 +93,7 @@ function M.get_project_config()
 end
 
 local function get_nodejs_config(project_files)
-	if not util.table_contains(project_files, "package.json") then
+	if not vim.tbl_contains(project_files, "package.json") then
 		return
 	end
 
@@ -102,7 +102,7 @@ local function get_nodejs_config(project_files)
 
 	local runner = "npm"
 	-- if they have a yarn.lock file they probably want to run using yarn instead of npm
-	if util.table_contains(project_files, "yarn.lock") then
+	if vim.tbl_contains(project_files, "yarn.lock") then
 		runner = "yarn"
 	end
 

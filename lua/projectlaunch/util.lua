@@ -1,16 +1,6 @@
 local M = {}
-local api = vim.api
 
 M.augroup = vim.api.nvim_create_augroup("ProjectLaunch", { clear = true })
-
-function M.table_contains(tbl, item)
-	for _, value in ipairs(tbl) do
-		if value == item then
-			return true
-		end
-	end
-	return false
-end
 
 function M.table_has_items(tbl)
 	for _, _ in pairs(tbl) do
@@ -19,41 +9,16 @@ function M.table_has_items(tbl)
 	return false
 end
 
-function M.remove_item(tbl, item)
-	local new_table = {}
-	for _, value in ipairs(tbl) do
-		if value == item then
-			table.insert(new_table, value)
-		end
-	end
-
-	return new_table
-end
-
 function M.find_index(tbl, item)
 	assert(type(tbl) == "table", "first argument must be a table, got " .. type(tbl))
 
-	local found_index = nil
 	for index, value in ipairs(tbl) do
 		if value == item then
-			found_index = index
+			return index
 		end
 	end
 
-	return found_index
-end
-
-function M.join(tbl, separator)
-	local str = ""
-
-	for i, value in ipairs(tbl) do
-		if i == 1 then
-			str = value
-		else
-			str = str .. separator .. value
-		end
-	end
-	return str
+	return nil
 end
 
 function M.clamp(num, min, max)
