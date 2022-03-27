@@ -17,10 +17,6 @@ function M.get_config(project_files)
 		return
 	end
 
-	if not vim.tbl_contains(project_files, "Makefile") then
-		return
-	end
-
 	if vim.fn.executable("make") == 0 then
 		util.log("Makefile found but make isn't installed")
 		return
