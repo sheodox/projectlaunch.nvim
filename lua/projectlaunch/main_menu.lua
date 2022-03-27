@@ -1,5 +1,6 @@
 local M = {}
 local config = require("projectlaunch.config")
+local config_utils = require("projectlaunch.config_utils")
 local util = require("projectlaunch.util")
 local InteractiveMenu = require("projectlaunch.interactive_menu")
 local term = require("projectlaunch.term")
@@ -31,7 +32,7 @@ local function prompt_launch()
 	if cfg == nil and not util.table_has_items(ecosystem_cfg) then
 		util.log(
 			"No .projectlaunch.json file or supported ecosystem specific configuration files were found at "
-				.. config.get_project_root()
+				.. config_utils.get_project_root()
 		)
 		return
 	end

@@ -1,6 +1,5 @@
-local config = require("projectlaunch.config")
+local config_utils = require("projectlaunch.config_utils")
 local win = require("projectlaunch.win")
-local util = require("projectlaunch.util")
 local api = vim.api
 
 local term_name_prefix = "ProjectLaunch terminal - "
@@ -11,7 +10,7 @@ function Job:new(command, opts)
 
 	api.nvim_buf_set_name(buf, term_name_prefix .. command.name)
 
-	local cwd = config.get_project_root()
+	local cwd = config_utils.get_project_root()
 	if command.cwd ~= nil then
 		cwd = command.cwd
 	end
