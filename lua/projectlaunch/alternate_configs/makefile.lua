@@ -46,8 +46,6 @@ function M.get_config(project_files)
 		table.insert(config.commands, { cmd = "make " .. target })
 	end
 
-	print(#make_targets)
-
 	return config_utils.Config:new(config)
 end
 
