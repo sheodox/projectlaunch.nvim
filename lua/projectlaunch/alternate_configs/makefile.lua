@@ -40,10 +40,10 @@ function M.get_config(project_files)
 	end
 
 	local config = { commands = {
-		{ name = "<default target>", cmd = "make", groups = {} },
+		{ cmd = "make" },
 	} }
 	for _, target in ipairs(make_targets) do
-		table.insert(config.commands, { name = target, cmd = "make " .. target, groups = {} })
+		table.insert(config.commands, { cmd = "make " .. target })
 	end
 
 	print(#make_targets)

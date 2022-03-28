@@ -20,7 +20,7 @@ function M.get_config(project_files)
 		local config = { commands = {} }
 
 		for name, _ in pairs(packagejson.scripts) do
-			table.insert(config.commands, { name = name, cmd = runner .. " run " .. name, groups = {} })
+			table.insert(config.commands, { cmd = runner .. " run " .. name })
 		end
 
 		return config_utils.Config:new(config)

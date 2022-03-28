@@ -42,6 +42,13 @@ local Config = {}
 M.Config = Config
 
 function Config:new(cfg)
+	-- if no name specified, use the command (used by alternate sources)
+	for _, command in ipairs(cfg.commands) do
+		if command.name == nil then
+			command.name = command.cmd
+		end
+	end
+
 	table.sort(cfg.commands, function(a, b)
 		return a.name < b.name
 	end)
