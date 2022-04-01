@@ -49,6 +49,12 @@ interface ProjectLaunchConfig {
 
 ```lua
 
+-- optionally override defaults
+require('projectlaunch').setup({
+    -- set a default width for split windows
+    split_default_width = 80 
+})
+
 -- open the main menu
 vim.keymap.set('n', "<leader>ll", require('projectlaunch').toggle_menu, {noremap = true, expr = false, buffer = false})
 -- open the floating window terminal viewer

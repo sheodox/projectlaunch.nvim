@@ -1,9 +1,16 @@
 local M = {}
+local options = require("projectlaunch.options")
 local api = vim.api
 
 function M.create_split_window()
 	vim.cmd("vsplit") -- split vertically
 	vim.cmd("wincmd L") -- move to the right side of the screen
+
+	local width = options.get().split_default_width
+	if width ~= nil then
+		api.nvim_win_set_width(0, width)
+	end
+
 	return api.nvim_get_current_win()
 end
 
