@@ -91,6 +91,23 @@ local function has_jobs()
 	return true
 end
 
+local function is_split_usable()
+	if split_win == nil or not vim.api.nvim_win_is_valid(split_win) then
+		return false
+	end
+
+	-- the buffer in the split window could have changed, check if it still has a terminal buffer in it
+	-- otherwise we need to open a new split
+	local buf_in_last_known_split = vim.api.nvim_win_get_buf(split_win)
+
+	local term_bufs = {}
+	for _, job in ipairs(M.jobs) do
+		table.insert(term_bufs, job.buf)
+	end
+
+	return vim.tbl_contains(term_bufs, buf_in_last_known_split)
+end
+
 function M.toggle_float()
 	if not has_jobs() then
 		return
@@ -109,7 +126,7 @@ function M.toggle_split()
 		return
 	end
 
-	if split_win and vim.api.nvim_win_is_valid(split_win) then
+	if is_split_usable() then
 		api.nvim_win_close(split_win, true)
 		split_win = nil
 	else
@@ -122,7 +139,7 @@ function M.show_split(job_index)
 		viewing_index.split = util.clamp(job_index, 0, #M.jobs)
 	end
 
-	if not (split_win and vim.api.nvim_win_is_valid(split_win)) then
+	if not is_split_usable() then
 		split_win = win.create_split_window()
 	end
 
