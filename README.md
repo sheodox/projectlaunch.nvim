@@ -64,6 +64,8 @@ vim.keymap.set('n', "<leader>ls", require('projectlaunch').toggle_split, {norema
 -- show the next or previous terminals in the open viewer
 vim.keymap.set('n', "<leader>ln", require('projectlaunch').show_next, {noremap = true, expr = false, buffer = false})
 vim.keymap.set('n', "<leader>lm", require('projectlaunch').show_prev, {noremap = true, expr = false, buffer = false})
+-- restart the command running in the currently open split terminal
+vim.keymap.set('n', "<leader>lr", require('projectlaunch').restart_command_in_split, {noremap = true, expr = false, buffer = false})
 ```
 
 ### Hotkeys

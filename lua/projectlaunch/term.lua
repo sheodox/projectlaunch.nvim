@@ -240,4 +240,16 @@ function M.show_prev()
 	end
 end
 
+function M.restart_job_in_split()
+	if not is_split_usable() then
+		return
+	end
+
+	local split_job = M.jobs[viewing_index.split]
+
+	if split_job ~= nil then
+		M.restart_job(split_job)
+	end
+end
+
 return M
