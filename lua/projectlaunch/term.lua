@@ -208,12 +208,12 @@ function M.restart_job(old_job)
 
 	local job_index = util.find_index(M.jobs, old_job)
 	local new_job = Job:new(old_job._args[1], old_job._args[2])
+	local active_win_type = M.get_active_window_type()
 
 	M.jobs[job_index] = new_job
 
-	local active = M.get_active_window_type()
-	if active ~= nil then
-		M.show_term(active)
+	if active_win_type ~= nil then
+		M.show_term(active_win_type)
 	end
 end
 
@@ -221,7 +221,7 @@ function M.get_active_window_type()
 	-- floating menus cannot be open and not be focused, if a floating menu terminal is open it's all there is
 	if floating_menu ~= nil then
 		return "float"
-	elseif split_win and vim.api.nvim_win_is_valid(split_win) then
+	elseif is_split_usable() then
 		return "split"
 	end
 end
