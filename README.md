@@ -82,6 +82,7 @@ Main Menu
 Prompt menu
 
 * `<CR>` - run the command or group under the cursor
+* `c` - enter a command manually (will show under a "Custom" heading). These commands aren't saved, use this when you just want to run a one off command.
 
 Terminals
 

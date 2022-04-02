@@ -19,11 +19,11 @@ function M.get_project_config()
 
 	if ok then
 		cached_config = config_utils.Config:new(config)
-
-		return cached_config
 	else
-		return nil
+		cached_config = config_utils.Config:new()
 	end
+
+	return cached_config
 end
 
 -- for languages/ecosystems that have a standard way to specify lists of commands

@@ -42,6 +42,10 @@ local Config = {}
 M.Config = Config
 
 function Config:new(cfg)
+	if cfg == nil then
+		cfg = { commands = {} }
+	end
+
 	-- if no name specified, use the command (used by alternate sources)
 	for _, command in ipairs(cfg.commands) do
 		if command.name == nil then
@@ -61,6 +65,7 @@ function Config:new(cfg)
 	local c = {
 		commands = cfg.commands,
 		groups = groups,
+		custom = {},
 	}
 	self.__index = self
 	return setmetatable(c, self)
@@ -77,6 +82,16 @@ function Config:find_by_group(group_name)
 		end
 	end
 	return cmds
+end
+
+function Config:add_custom(cmd)
+	if cmd ~= "" and cmd ~= nil then
+		table.insert(self.custom, { name = cmd, cmd = cmd })
+	end
+end
+
+function Config:has_things()
+	return #self.commands > 0 or #self.custom > 0
 end
 
 return M

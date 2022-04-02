@@ -39,24 +39,30 @@ local function prompt_launch()
 
 	local lines = {}
 
-	if cfg ~= nil then
-		if #cfg.commands < 0 then
-			util.log("No commands found in .projectlaunch.json")
-		else
-			if #cfg.groups > 0 then
-				table.insert(lines, { nil, "Groups" })
+	if not cfg:has_things() then
+		util.log("No commands found in .projectlaunch.json")
+	else
+		if #cfg.groups > 0 then
+			table.insert(lines, { nil, "Groups" })
 
-				for _, group in ipairs(cfg.groups) do
-					table.insert(lines, { { group = group }, "  " .. group })
-				end
+			for _, group in ipairs(cfg.groups) do
+				table.insert(lines, { { group = group }, "  " .. group })
 			end
+		end
 
-			if #cfg.commands > 0 then
-				table.insert(lines, { nil, "Commands" })
+		if #cfg.commands > 0 then
+			table.insert(lines, { nil, "Commands" })
 
-				for _, command in ipairs(cfg.commands) do
-					table.insert(lines, { { command = command }, "  " .. command.name })
-				end
+			for _, command in ipairs(cfg.commands) do
+				table.insert(lines, { { command = command }, "  " .. command.name })
+			end
+		end
+
+		if #cfg.custom > 0 then
+			table.insert(lines, { nil, "Custom" })
+
+			for _, command in ipairs(cfg.custom) do
+				table.insert(lines, { { command = command }, "  " .. command.name })
 			end
 		end
 	end
@@ -80,6 +86,19 @@ local function prompt_launch()
 		M.toggle_main_menu()
 	end
 
+	local function prompt_custom_cmd()
+		vim.ui.input({ prompt = "ProjectLaunch: Enter a command to add: " }, function(cmd)
+			cfg:add_custom(cmd)
+			-- reopen to rerender with the new command
+			prompt_launch()
+		end)
+	end
+
+	if #lines == 0 then
+		table.insert(lines, { nil, util.center("-- No commands configured --", max_menu_width) })
+		table.insert(lines, { nil, util.center("Press c to enter a command", max_menu_width) })
+	end
+
 	prompt_menu = InteractiveMenu:new({
 		header_lines = { "What do you want to launch?" },
 		body_lines = lines,
@@ -88,6 +107,7 @@ local function prompt_launch()
 		keymaps = {
 			["<cr>"] = { handler = spawn, destroy = true },
 			m = { handler = M.toggle_main_menu, destroy = true },
+			c = { handler = prompt_custom_cmd, with_row = false },
 		},
 	})
 	prompt_menu:render()
