@@ -89,7 +89,7 @@ Prompt menu
 Terminals
 
 * `(` - view the previous command's terminal output
-* `)` - view the previous command' terminal output
+* `)` - view the next command's terminal output
 
 ### Goals
 
