@@ -107,6 +107,7 @@ function InteractiveMenu:_make_float(options)
 	vim.opt_local.signcolumn = "no"
 	vim.opt_local.colorcolumn = "0"
 	vim.opt_local.list = false
+	vim.opt_local.spell = false
 
 	self:setup_highlights(win)
 

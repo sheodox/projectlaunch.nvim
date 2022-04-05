@@ -7,6 +7,7 @@ local term_name_prefix = "ProjectLaunch terminal - "
 local Job = {}
 function Job:new(command, opts)
 	local temp_win, buf = win.create_temp_window()
+	vim.opt_local.spell = false
 
 	api.nvim_buf_set_name(buf, term_name_prefix .. command.name)
 
