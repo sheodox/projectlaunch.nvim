@@ -136,8 +136,15 @@ local function restart_job(data)
 end
 
 local function kill_job(data)
-	data.job:kill()
-	util.log("Killed '" .. data.job.name .. "'")
+	if data.job.running then
+		data.job:kill()
+		util.log("Killed '" .. data.job.name .. "'")
+	else
+		term.remove_job(data.job)
+		util.log("Removed '" .. data.job.name .. "'")
+	end
+
+	M.render_menu()
 end
 
 function M.render_menu()

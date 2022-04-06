@@ -79,7 +79,7 @@ Main Menu
 	* `f` - show the terminal output in a floating window
 	* `s` - show the terminal output in a split window
 	* `R` - restart command
-	* `X` - kill running command
+	* `X` - kill running command (if command has stopped already `X` removes it from the list)
 
 Prompt menu
 

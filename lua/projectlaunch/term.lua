@@ -25,11 +25,45 @@ function M.spawn_term(command, opts)
 	table.insert(M.jobs, job)
 end
 
+function M.remove_job(job)
+	M.jobs = vim.tbl_filter(function(j)
+		return j ~= job
+	end, M.jobs)
+
+	if api.nvim_buf_is_valid(job.buf) then
+		api.nvim_buf_delete(job.buf, { force = true })
+	end
+end
+
 function M.show_term(win_type)
 	assert_valid_win_type(win_type)
 
+	if not M.has_jobs() then
+		return
+	end
+
+	local job = M.jobs[viewing_index[win_type]]
+	local retry = false
+
+	-- if for some reason the job they're trying to view isn't valid anymore, try the first one.
+	-- if there are no more jobs we will short circuit with the M.has_jobs() check above and stop.
+	if not job then
+		viewing_index[win_type] = 1
+		retry = true
+	elseif not api.nvim_buf_is_valid(job.buf) then
+		-- if the job exits, then a key is pressed in insert mode in the buffer the buffer auto-closes.
+		-- in which case we wouldn't have removed the job already, and the buffer is no
+		-- longer valid. it needs to be cleaned up.
+		M.remove_job(job)
+		retry = true
+	end
+
+	if retry then
+		M.show_term(win_type)
+		return
+	end
+
 	if win_type == "split" then
-		local job = M.jobs[viewing_index[win_type]]
 		api.nvim_win_set_buf(split_win, job.buf)
 
 		-- InteractiveMenu handles these hotkeys for the floating window, not so much for the split
