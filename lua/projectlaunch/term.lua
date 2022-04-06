@@ -3,6 +3,7 @@ local Job = require("projectlaunch.jobs")
 local util = require("projectlaunch.util")
 local InteractiveMenu = require("projectlaunch.interactive_menu")
 local win = require("projectlaunch.win")
+local options = require("projectlaunch.options")
 local api = vim.api
 
 local viewing_index = {
@@ -173,12 +174,21 @@ function M.show_split(job_index)
 		viewing_index.split = util.clamp(job_index, 0, #M.jobs)
 	end
 
+	local focus_split = options.get().split_focus_on_open
+	local previously_current_win = api.nvim_get_current_win()
+
 	if not is_split_usable() then
 		split_win = win.create_split_window()
 	end
 
 	M.show_term("split")
 	M.scroll_to_bottom()
+
+	-- we need to focus the window while setting options and getting everything set up, this just re-focuses
+	-- whatever window was focused before all that if the option says so
+	if not focus_split then
+		api.nvim_set_current_win(previously_current_win)
+	end
 end
 
 function M.show_float(job_index)

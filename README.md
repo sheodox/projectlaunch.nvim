@@ -53,6 +53,8 @@ interface ProjectLaunchConfig {
 require('projectlaunch').setup({
     -- set a default width for split windows
     split_default_width = 80 
+    -- if opening the split terminal should move focus to the split's window
+    split_focus_on_open = false,
 })
 
 -- open the main menu
