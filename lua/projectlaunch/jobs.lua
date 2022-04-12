@@ -17,6 +17,9 @@ function Job:new(command, opts)
 	end
 
 	local j = {
+		-- duplicating the name lets commands be edited and
+		-- jobs won't get the updated command until it's rerun,
+		-- so it won't look like the newly edited command had been run automatically
 		name = command.name,
 		cmd = command.cmd,
 		job_id = nil,

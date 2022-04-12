@@ -61,8 +61,8 @@ local function prompt_launch()
 		if #cfg.custom > 0 then
 			table.insert(lines, { nil, "Custom" })
 
-			for _, command in ipairs(cfg.custom) do
-				table.insert(lines, { { command = command }, "  " .. command.name })
+			for i, command in ipairs(cfg.custom) do
+				table.insert(lines, { { command = command, custom = i }, "  " .. command.name })
 			end
 		end
 	end
@@ -94,6 +94,22 @@ local function prompt_launch()
 		end)
 	end
 
+	local function edit_cmd(data)
+		if not data.command then
+			util.log("You can only edit commands.")
+			return
+		end
+
+		vim.ui.input({ prompt = "ProjectLaunch: Update command: ", default = data.command.cmd }, function(new_cmd)
+			if not data.custom then
+				cfg:add_custom(new_cmd)
+			else
+				cfg:update_custom(data.custom, new_cmd)
+			end
+			prompt_launch()
+		end)
+	end
+
 	if #lines == 0 then
 		table.insert(lines, { nil, util.center("-- No commands configured --", max_menu_width) })
 		table.insert(lines, { nil, util.center("Press c to enter a command", max_menu_width) })
@@ -108,6 +124,7 @@ local function prompt_launch()
 			["<cr>"] = { handler = spawn, destroy = true },
 			m = { handler = M.toggle_main_menu, destroy = true },
 			c = { handler = prompt_custom_cmd, with_row = false },
+			e = { handler = edit_cmd, with_row = true },
 		},
 	})
 	prompt_menu:render()
@@ -157,9 +174,12 @@ function M.render_menu()
 	local status_lines = {}
 
 	for job_index, job in ipairs(term.jobs) do
-		local status = "running"
+		local highlight_group = "ProjectLaunchRunning"
+		local status = ""
+
 		if not job.running then
-			status = "exit code " .. tostring(job.exit_code)
+			status = " (exit code " .. tostring(job.exit_code) .. ")"
+			highlight_group = "ProjectLaunchExited"
 		end
 
 		local row_data = {
@@ -168,7 +188,8 @@ function M.render_menu()
 		}
 		table.insert(status_lines, {
 			row_data,
-			util.justify(job.name, "(" .. tostring(status) .. ")", max_menu_width),
+			job.name .. status,
+			{ highlight = highlight_group },
 		})
 	end
 

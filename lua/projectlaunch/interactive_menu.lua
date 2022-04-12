@@ -85,6 +85,12 @@ function InteractiveMenu:render_body(body_lines)
 	api.nvim_buf_set_option(self.body_buf, "modifiable", true)
 	set_buffer_lines(self.body_buf, display_lines, self.body_win)
 	api.nvim_buf_set_option(self.body_buf, "modifiable", false)
+
+	for index, line in ipairs(self.body_lines) do
+		if line[3] ~= nil and line[3].highlight ~= nil then
+			api.nvim_buf_add_highlight(self.body_buf, -1, line[3].highlight, index - 1, 0, -1)
+		end
+	end
 end
 
 function InteractiveMenu:_make_float(options)

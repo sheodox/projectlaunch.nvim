@@ -94,4 +94,13 @@ function Config:has_things()
 	return #self.commands > 0 or #self.custom > 0
 end
 
+function Config:update_custom(custom_index, new_cmd)
+	if new_cmd == "" or new_cmd == nil then
+		return
+	end
+
+	self.custom[custom_index].name = new_cmd
+	self.custom[custom_index].cmd = new_cmd
+end
+
 return M

@@ -50,7 +50,9 @@ interface ProjectLaunchConfig {
 ```lua
 
 -- optionally override defaults
-require('projectlaunch').setup({
+local projectlaunch = require('projectlaunch')
+
+projectlaunch.setup({
     -- set a default width for split windows
     split_default_width = 80 
     -- if opening the split terminal should move focus to the split's window
@@ -58,16 +60,26 @@ require('projectlaunch').setup({
 })
 
 -- open the main menu
-vim.keymap.set('n', "<leader>ll", require('projectlaunch').toggle_menu, {noremap = true, expr = false, buffer = false})
+vim.keymap.set('n', "<leader>ll", projectlaunch.toggle_menu, {noremap = true, expr = false, buffer = false})
+
 -- open the floating window terminal viewer
-vim.keymap.set('n', "<leader>lf", require('projectlaunch').toggle_float, {noremap = true, expr = false, buffer = false})
+vim.keymap.set('n', "<leader>lf", projectlaunch.toggle_float, {noremap = true, expr = false, buffer = false})
+
 -- open the split window terminal viewer
-vim.keymap.set('n', "<leader>ls", require('projectlaunch').toggle_split, {noremap = true, expr = false, buffer = false})
+vim.keymap.set('n', "<leader>ls", projectlaunch.toggle_split, {noremap = true, expr = false, buffer = false})
+
 -- show the next or previous terminals in the open viewer
-vim.keymap.set('n', "<leader>ln", require('projectlaunch').show_next, {noremap = true, expr = false, buffer = false})
-vim.keymap.set('n', "<leader>lm", require('projectlaunch').show_prev, {noremap = true, expr = false, buffer = false})
+vim.keymap.set('n', "<leader>ln", projectlaunch.show_next, {noremap = true, expr = false, buffer = false})
+vim.keymap.set('n', "<leader>lm", projectlaunch.show_prev, {noremap = true, expr = false, buffer = false})
+
 -- restart the command running in the currently open split terminal
-vim.keymap.set('n', "<leader>lr", require('projectlaunch').restart_command_in_split, {noremap = true, expr = false, buffer = false})
+vim.keymap.set('n', "<leader>lr", projectlaunch.restart_command_in_split, {noremap = true, expr = false, buffer = false})
+
+-- add custom commands programmatically. you can write your own lua code to add a list of commands
+-- from a tool you use that projectlaunch.nvim doesn't support. or type part of a long command that
+-- you need to use occasionally, then use 'e' in the prompt menu to edit and add the rest, like for
+-- running specific parts of test suites, put everything but the test suite name in here then edit later
+projectlaunch.add_custom_command("npm test")
 ```
 
 ### Hotkeys
@@ -87,11 +99,23 @@ Prompt menu
 
 * `<CR>` - run the command or group under the cursor
 * `c` - enter a command manually (will show under a "Custom" heading). These commands aren't saved, use this when you just want to run a one off command.
+* `e` - edit the command (edits in-place for custom commands created with `c`, creates a new custom if any other command source is used). Pressing `R` over an edited command in the main menu will restart it using the new command.
 
 Terminals
 
 * `(` - view the previous command's terminal output
 * `)` - view the next command's terminal output
+
+### Highlights
+
+Commands in the main menu are highlighted using the following highlight groups:
+
+```vim
+" highlights for commands that are currently running
+hi def link ProjectLaunchRunning Normal
+" highlights for commands that have exited
+hi def link ProjectLaunchExited Comment
+```
 
 ### Goals
 

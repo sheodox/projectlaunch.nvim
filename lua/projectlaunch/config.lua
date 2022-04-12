@@ -26,6 +26,13 @@ function M.get_project_config()
 	return cached_config
 end
 
+function M.add_custom_command(cmd)
+	assert(cmd ~= nil and cmd ~= "", "can't add a blank command")
+
+	local config = M.get_project_config()
+	config:add_custom(cmd)
+end
+
 -- for languages/ecosystems that have a standard way to specify lists of commands
 -- they can be added here, along with a language specific parser. The format is
 -- { string, function } where the the string is the name to show these commands

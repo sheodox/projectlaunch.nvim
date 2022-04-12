@@ -5,6 +5,11 @@ set cpo&vim " reset them to defaults
 
 lua require('projectlaunch')
 
+" highlights for commands that are currently running
+hi def link ProjectLaunchRunning Normal
+" highlights for commands that have exited
+hi def link ProjectLaunchExited Comment
+
 let &cpo = s:save_cpo " and restore after
 unlet s:save_cpo
 

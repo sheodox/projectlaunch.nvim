@@ -1,6 +1,7 @@
 local M = {}
 local term = require("projectlaunch.term")
 local main_menu = require("projectlaunch.main_menu")
+local config = require("projectlaunch.config")
 local options = require("projectlaunch.options")
 
 -- show/hide the main menu, all things can start from here
@@ -19,5 +20,7 @@ M.show_next = term.show_next
 M.setup = function(opts)
 	options.override(opts)
 end
+
+M.add_custom_command = config.add_custom_command
 
 return M
