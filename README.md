@@ -60,7 +60,7 @@ projectlaunch.setup({
 })
 
 -- open the main menu
-vim.keymap.set('n', "<leader>ll", projectlaunch.toggle_menu, {noremap = true, expr = false, buffer = false})
+vim.keymap.set('n', "<leader>ll", projectlaunch.toggle_main_menu, {noremap = true, expr = false, buffer = false})
 
 -- open the floating window terminal viewer
 vim.keymap.set('n', "<leader>lf", projectlaunch.toggle_float, {noremap = true, expr = false, buffer = false})
