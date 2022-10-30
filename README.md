@@ -15,7 +15,7 @@ https://user-images.githubusercontent.com/3468630/159603708-0045b827-4c51-42d6-a
 
 ## Configuration
 
-Your project's configuration should be specified in a `.projectlaunch.json` file at the root of your project, it will specify any commands that can be run. If you're familiar with Typescript this is an interface that would describe it.
+Your project's configuration should be specified in a file (default filename is `.projectlaunch.json`) at the root of your project, it will specify any commands that can be run. If you're familiar with Typescript this is an interface that would describe it.
 
 ```Typescript
 interface ProjectLaunchConfig {
@@ -57,6 +57,8 @@ projectlaunch.setup({
     split_default_width = 80 
     -- if opening the split terminal should move focus to the split's window
     split_focus_on_open = false,
+    -- the filename of configuration file which under root directory.
+    config_path = ".projectlaunch.json",
 })
 
 -- open the main menu

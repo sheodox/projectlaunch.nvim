@@ -4,6 +4,7 @@ local function get_default_options()
 	return {
 		split_default_width = 80,
 		split_focus_on_open = false,
+		config_path = ".projectlaunch.json",
 	}
 end
 
