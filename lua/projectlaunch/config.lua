@@ -1,5 +1,6 @@
 local M = {}
 local path = require("projectlaunch.path")
+local options = require("projectlaunch.options")
 local config_utils = require("projectlaunch.config_utils")
 local alt_configs = {
 	nodejs = require("projectlaunch.alternate_configs.nodejs"),
@@ -14,7 +15,7 @@ function M.get_project_config()
 		return cached_config
 	end
 
-	local config_path = path.join(config_utils.get_project_root(), ".projectlaunch.json")
+	local config_path = path.join(config_utils.get_project_root(), options.get().config_path)
 	local ok, config = pcall(config_utils.read_json_file, config_path)
 
 	if ok then
