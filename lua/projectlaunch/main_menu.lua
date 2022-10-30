@@ -2,6 +2,7 @@ local M = {}
 local config = require("projectlaunch.config")
 local config_utils = require("projectlaunch.config_utils")
 local util = require("projectlaunch.util")
+local options = require("projectlaunch.options")
 local InteractiveMenu = require("projectlaunch.interactive_menu")
 local term = require("projectlaunch.term")
 
@@ -31,7 +32,9 @@ local function prompt_launch()
 
 	if cfg == nil and not util.table_has_items(ecosystem_cfg) then
 		util.log(
-			"No .projectlaunch.json file or supported ecosystem specific configuration files were found at "
+			"No "
+				.. options.get().config_path
+				.. "file or supported ecosystem specific configuration files were found at "
 				.. config_utils.get_project_root()
 		)
 		return
@@ -40,7 +43,7 @@ local function prompt_launch()
 	local lines = {}
 
 	if not cfg:has_things() then
-		util.log("No commands found in .projectlaunch.json")
+		util.log("No commands found in " .. options.get().config_path)
 	else
 		if #cfg.groups > 0 then
 			table.insert(lines, { nil, "Groups" })
