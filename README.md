@@ -15,7 +15,7 @@ https://user-images.githubusercontent.com/3468630/159603708-0045b827-4c51-42d6-a
 
 ## Configuration
 
-Your project's configuration should be specified in a file (default is `.projectlaunch.json`) at the root of your project, it will specify any commands that can be run. If you're familiar with Typescript this is an interface that would describe it.
+Your project's configuration should be specified in a file (default filename is `.projectlaunch.json`) at the root of your project, it will specify any commands that can be run. If you're familiar with Typescript this is an interface that would describe it.
 
 ```Typescript
 interface ProjectLaunchConfig {
