@@ -59,6 +59,8 @@ projectlaunch.setup({
     split_focus_on_open = false,
     -- the filename of configuration file which under root directory.
     config_path = ".projectlaunch.json",
+    -- reload config after loaded a session or updated custom config
+    auto_reload_config = true,
 })
 
 -- open the main menu

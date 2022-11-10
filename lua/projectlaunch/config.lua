@@ -64,4 +64,13 @@ function M.get_ecosystem_configs()
 	return cached_ecosystem_specific_configs
 end
 
+-- reloading custom config and ecosystem configs
+function M.reload_config()
+	cached_config = nil
+	cached_ecosystem_specific_configs = nil
+
+	M.get_project_config()
+	M.get_ecosystem_configs()
+end
+
 return M
