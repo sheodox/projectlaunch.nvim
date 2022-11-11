@@ -59,7 +59,7 @@ projectlaunch.setup({
     split_focus_on_open = false,
     -- the filename of configuration file which under root directory.
     config_path = ".projectlaunch.json",
-    -- reload config after loaded a session or updated custom config
+    -- automatically reload config after loading a session or updating your ProjectLaunch config file
     auto_reload_config = true,
 })
 
