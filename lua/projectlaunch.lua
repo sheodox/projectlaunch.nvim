@@ -1,6 +1,5 @@
 local M = {}
 
-local api = vim.api
 local term = require("projectlaunch.term")
 local main_menu = require("projectlaunch.main_menu")
 local config = require("projectlaunch.config")
@@ -21,19 +20,6 @@ M.show_next = term.show_next
 
 M.setup = function(opts)
 	options.override(opts)
-
-	if options.get().auto_reload_config == true then
-		-- reload config when reload a saved session
-		api.nvim_create_autocmd("SessionLoadPost", {
-			callback = config.reload_config,
-		})
-
-		-- reload config when updated custom config
-		api.nvim_create_autocmd(
-			"BufWritePost",
-			{ pattern = options.get().config_path, callback = config.reload_config }
-		)
-	end
 end
 
 M.add_custom_command = config.add_custom_command
