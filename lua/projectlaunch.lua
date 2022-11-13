@@ -1,4 +1,5 @@
 local M = {}
+
 local term = require("projectlaunch.term")
 local main_menu = require("projectlaunch.main_menu")
 local config = require("projectlaunch.config")

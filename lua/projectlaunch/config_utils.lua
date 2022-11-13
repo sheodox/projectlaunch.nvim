@@ -42,7 +42,7 @@ local Config = {}
 M.Config = Config
 
 function Config:new(cfg)
-	if cfg == nil then
+	if cfg == nil or cfg.commands == nil then
 		cfg = { commands = {} }
 	end
 

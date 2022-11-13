@@ -5,6 +5,7 @@ local function get_default_options()
 		split_default_width = 80,
 		split_focus_on_open = false,
 		config_path = ".projectlaunch.json",
+		auto_reload_config = true,
 	}
 end
 

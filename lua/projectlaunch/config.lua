@@ -1,4 +1,6 @@
 local M = {}
+local api = vim.api
+local util = require("projectlaunch.util")
 local path = require("projectlaunch.path")
 local options = require("projectlaunch.options")
 local config_utils = require("projectlaunch.config_utils")
@@ -63,5 +65,31 @@ function M.get_ecosystem_configs()
 
 	return cached_ecosystem_specific_configs
 end
+
+function M.reload_config()
+	cached_config = nil
+	cached_ecosystem_specific_configs = nil
+	M.get_project_config()
+	M.get_ecosystem_configs()
+end
+
+local function reload_config()
+	if options.get().auto_reload_config then
+		M.reload_config()
+	end
+end
+
+-- reload config when reload a saved session
+api.nvim_create_autocmd("SessionLoadPost", {
+	group = util.augroup,
+	callback = reload_config,
+})
+
+-- reload config when updated custom config
+api.nvim_create_autocmd("BufWritePost", {
+	group = util.augroup,
+	pattern = "*.json",
+	callback = reload_config,
+})
 
 return M
