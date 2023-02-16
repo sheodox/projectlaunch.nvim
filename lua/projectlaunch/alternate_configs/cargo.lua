@@ -11,10 +11,7 @@ end
 
 M.is_detected = function(project_files)
 	-- matching `src/` and `Cargo.toml`
-	if vim.tbl_contains(project_files, "src") and vim.tbl_contains(project_files, "Cargo.toml") then
-		return true
-	end
-	return false
+	return vim.tbl_contains(project_files, "src") and vim.tbl_contains(project_files, "Cargo.toml")
 end
 
 M.get_config = function(project_files)
