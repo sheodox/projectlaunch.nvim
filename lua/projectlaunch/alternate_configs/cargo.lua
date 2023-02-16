@@ -6,10 +6,7 @@ M.name = "Cargo"
 M.runner = "cargo"
 
 M.is_runner_executable = function()
-	if vim.fn.executable(M.runner) == 1 then
-		return true
-	end
-	return false
+	return vim.fn.executable(M.runner) == 1
 end
 
 M.is_detected = function(project_files)
