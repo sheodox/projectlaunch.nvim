@@ -54,7 +54,7 @@ local projectlaunch = require('projectlaunch')
 
 projectlaunch.setup({
     -- set a default width for split windows
-    split_default_width = 80 
+    split_default_width = 80,
     -- if opening the split terminal should move focus to the split's window
     split_focus_on_open = false,
     -- the filename of configuration file which under root directory.
