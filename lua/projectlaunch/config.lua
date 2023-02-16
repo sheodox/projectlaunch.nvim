@@ -7,6 +7,7 @@ local config_utils = require("projectlaunch.config_utils")
 local alt_configs = {
 	nodejs = require("projectlaunch.alternate_configs.nodejs"),
 	makefile = require("projectlaunch.alternate_configs.makefile"),
+	cargo = require("projectlaunch.alternate_configs.cargo"),
 }
 
 local cached_config = nil
@@ -43,6 +44,7 @@ end
 local ecosystem_specific_getters = {
 	{ "package.json", alt_configs.nodejs.get_config },
 	{ "Makefile", alt_configs.makefile.get_config },
+	{ alt_configs.cargo.name, alt_configs.cargo.get_config },
 }
 
 function M.get_ecosystem_configs()
