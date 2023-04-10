@@ -82,7 +82,7 @@ vim.keymap.set('n', "<leader>lr", projectlaunch.restart_command_in_split, {norem
 
 -- add custom commands programmatically. you can write your own lua code to add a list of commands
 -- from a tool you use that projectlaunch.nvim doesn't support. or type part of a long command that
--- you need to use occasionally, then use 'e' in the prompt menu to edit and add the rest, like for
+-- you need to use occasionally, then use 'e' in the launch menu to edit and add the rest, like for
 -- running specific parts of test suites, put everything but the test suite name in here then edit later
 projectlaunch.add_custom_command("npm test")
 ```
@@ -93,14 +93,14 @@ In all floating windows `<esc>` closes the window (terminal windows will keep ru
 
 Main Menu
 
-* `p` - open the command/group selection window ("Prompt menu")
+* `p` - open the command/group selection window ("Launch menu")
 * Commands that run on the job under the cursor
 	* `f` - show the terminal output in a floating window
 	* `s` - show the terminal output in a split window
 	* `R` - restart command
 	* `X` - kill running command (if command has stopped already `X` removes it from the list)
 
-Prompt menu
+Launch menu
 
 * `<CR>` - run the command or group under the cursor
 * `c` - enter a command manually (will show under a "Custom" heading). These commands aren't saved, use this when you just want to run a one off command.
@@ -111,7 +111,7 @@ Terminals
 * `(` - view the previous command's terminal output
 * `)` - view the next command's terminal output
 
-### Open launch dialog when Neovim starts
+### Open launch menu when Neovim starts
 
 ```lua
 vim.api.nvim_create_autocmd("VimEnter", {

@@ -7,7 +7,7 @@ local InteractiveMenu = require("projectlaunch.interactive_menu")
 local term = require("projectlaunch.term")
 
 local main_menu = nil
-local prompt_menu = nil
+local launch_menu = nil
 local max_menu_width = 50
 local max_menu_height = 30
 
@@ -26,7 +26,7 @@ function M.launch_command(cmd)
 	})
 end
 
-local function prompt_launch()
+local function open_launch_menu()
 	local cfg = config.get_project_config()
 	local ecosystem_cfg = config.get_ecosystem_configs()
 
@@ -93,7 +93,7 @@ local function prompt_launch()
 		vim.ui.input({ prompt = "ProjectLaunch: Enter a command to add: " }, function(cmd)
 			cfg:add_custom(cmd)
 			-- reopen to rerender with the new command
-			prompt_launch()
+			open_launch_menu()
 		end)
 	end
 
@@ -109,7 +109,7 @@ local function prompt_launch()
 			else
 				cfg:update_custom(data.custom, new_cmd)
 			end
-			prompt_launch()
+			open_launch_menu()
 		end)
 	end
 
@@ -118,7 +118,7 @@ local function prompt_launch()
 		table.insert(lines, { nil, util.center("Press c to enter a command", max_menu_width) })
 	end
 
-	prompt_menu = InteractiveMenu:new({
+	launch_menu = InteractiveMenu:new({
 		header_lines = { "What do you want to launch?" },
 		body_lines = lines,
 		max_height = max_menu_height,
@@ -130,14 +130,14 @@ local function prompt_launch()
 			e = { handler = edit_cmd, with_row = true },
 		},
 	})
-	prompt_menu:render()
+	launch_menu:render()
 end
 
 function M.toggle_launch_menu()
-	if prompt_menu ~= nil then
-		prompt_menu:destroy()
+	if launch_menu ~= nil then
+		launch_menu:destroy()
 	else
-		prompt_launch()
+		open_launch_menu()
 	end
 end
 
@@ -224,7 +224,7 @@ function M.toggle_main_menu()
 				main_menu = nil
 			end,
 			keymaps = {
-				p = { handler = prompt_launch, with_row = false, destroy = true },
+				p = { handler = open_launch_menu, with_row = false, destroy = true },
 				f = { handler = show_in_float, destroy = true },
 				s = { handler = show_in_split, destroy = true },
 				R = { handler = restart_job },

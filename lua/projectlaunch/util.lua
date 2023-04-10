@@ -35,7 +35,7 @@ function M.justify(str1, str2, win_width)
 end
 
 function M.log(str)
-	print("ProjectLaunch: " .. str)
+	vim.notify("ProjectLaunch: " .. str)
 end
 
 return M

@@ -40,7 +40,7 @@ end
 -- for languages/ecosystems that have a standard way to specify lists of commands
 -- they can be added here, along with a language specific parser. The format is
 -- { string, function } where the the string is the name to show these commands
--- is the 'heading' these commands will show under in the prompt menu.
+-- is the 'heading' these commands will show under in the launch menu.
 local ecosystem_specific_getters = {
 	{ "package.json", alt_configs.nodejs.get_config },
 	{ "Makefile", alt_configs.makefile.get_config },
