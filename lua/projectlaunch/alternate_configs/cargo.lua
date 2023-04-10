@@ -1,6 +1,7 @@
 local M = {}
 -- local path = require("projectlaunch.path")
 local config_utils = require("projectlaunch.config_utils")
+local util = require("projectlaunch.util")
 
 M.name = "Cargo"
 M.runner = "cargo"
@@ -17,12 +18,21 @@ end
 M.get_config = function(project_files)
 	if M.is_detected(project_files) then
 		if not M.is_runner_executable() then
-			vim.notify("ProjectLaunch: " .. M.runner .. " is not executable.")
+			util.log(M.runner .. " is not executable.")
 		end
 
 		-- available cargo commands in project scope
-		local available_commands =
-			{ "run", "build", "build --release", "check", "clean", "init", "update", "test", "bench" }
+		local available_commands = {
+			"run",
+			"build",
+			"build --release",
+			"check",
+			"clean",
+			"init",
+			"update",
+			"test",
+			"bench",
+		}
 
 		local config = {
 			commands = {},
