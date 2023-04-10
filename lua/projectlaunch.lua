@@ -7,6 +7,11 @@ local options = require("projectlaunch.options")
 
 -- show/hide the main menu, all things can start from here
 M.toggle_main_menu = main_menu.toggle_main_menu
+-- show/hide the launch menu
+M.toggle_launch_menu = main_menu.toggle_launch_menu
+
+-- returns true if there are any commands that can be run
+M.has_commands = config.has_commands
 
 -- show/hide terminals in a floating window or split window
 M.toggle_float = term.toggle_float
@@ -22,6 +27,7 @@ M.setup = function(opts)
 	options.override(opts)
 end
 
+-- pass a command (as a string) to add to the launch menu
 M.add_custom_command = config.add_custom_command
 
 return M

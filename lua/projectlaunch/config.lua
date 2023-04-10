@@ -68,6 +68,19 @@ function M.get_ecosystem_configs()
 	return cached_ecosystem_specific_configs
 end
 
+function M.has_commands()
+	local has_project_config = M.get_project_config():has_things()
+	local has_ecosystem_config = false
+
+	for eco_name, eco_cfg in pairs(M.get_ecosystem_configs()) do
+		if eco_cfg:has_things() then
+			has_ecosystem_config = true
+		end
+	end
+
+	return has_project_config or has_ecosystem_config
+end
+
 function M.reload_config()
 	cached_config = nil
 	cached_ecosystem_specific_configs = nil

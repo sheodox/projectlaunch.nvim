@@ -7,6 +7,7 @@ local InteractiveMenu = require("projectlaunch.interactive_menu")
 local term = require("projectlaunch.term")
 
 local main_menu = nil
+local prompt_menu = nil
 local max_menu_width = 50
 local max_menu_height = 30
 
@@ -28,7 +29,6 @@ end
 local function prompt_launch()
 	local cfg = config.get_project_config()
 	local ecosystem_cfg = config.get_ecosystem_configs()
-	local prompt_menu = nil
 
 	if cfg == nil and not util.table_has_items(ecosystem_cfg) then
 		util.log(
@@ -131,6 +131,14 @@ local function prompt_launch()
 		},
 	})
 	prompt_menu:render()
+end
+
+function M.toggle_launch_menu()
+	if prompt_menu ~= nil then
+		prompt_menu:destroy()
+	else
+		prompt_launch()
+	end
 end
 
 local function show_in_float(data)

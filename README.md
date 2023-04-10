@@ -2,10 +2,11 @@
 
 This is a [Neovim](https://neovim.io/) plugin for running commands in your project. Have a bunch of commands you need to run to boot a site and kick off some build processes? Make a command group for them and start them all at once!
 
-It will also try searching for commands in:
+It will also by default provide commands for:
 
 * `package.json` "scripts" object for NodeJS projects
-* `Makefile`
+* `Makefile` targets
+* `cargo` commands for Rust projects
 
 I'm open to PRs adding support for more languages/ecosystem specific command registries.
 
@@ -109,6 +110,20 @@ Terminals
 
 * `(` - view the previous command's terminal output
 * `)` - view the next command's terminal output
+
+### Open launch dialog when Neovim starts
+
+```lua
+vim.api.nvim_create_autocmd("VimEnter", {
+    once = true,
+    callback = function()
+        local pl = require("projectlaunch")
+        if pl.has_commands() then
+           pl.toggle_launch_menu()
+        end
+    end,
+})
+```
 
 ### Highlights
 
