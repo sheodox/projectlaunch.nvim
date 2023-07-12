@@ -68,7 +68,7 @@ function generateCommand(originalCommand)
         local substitutionString = "$" .. i
 
         if string.find(originalCommand.cmd, substitutionString) then
-            setRuntimeVarViaPrompt(substitutionString, finalCommand)
+            setRuntimeVarViaPrompt(i, finalCommand)
             finalCommand = string.gsub(finalCommand, substitutionString, runtimeVars[i])
         end
     end
@@ -76,37 +76,40 @@ function generateCommand(originalCommand)
     return finalCommand
 end
 
-function generateJobName(command) 
-    if(table.getn(runtimeVars) > 0) then
-       local args = "" 
-       
-       for key, value in pairs(runtimeVars) do
-          args = args .. value .. "," 
-       end 
-
-       args = args:sub(1, -2) --Remove trailing comma
-
-       return command.name .. " (" .. args .. ")"
+function generateJobName(command)
+    if(getTableSize(runtimeVars) > 0) then
+       return command.name .. createArgPrefix()
     end 
 
     return command.name
 end
 
+function createArgPrefix()
+    local args = ""
 
-function setRuntimeVarViaPrompt(var, command)
-    vim.ui.input({ prompt = "ProjectLaunch: Enter argument " .. var .. " for\n" .. command .. "\n:"}, function(input)
-        table.insert(runtimeVars, input) 
-    end)
+    for key, value in pairs(runtimeVars) do
+        args = args .. value .. "," 
+    end 
+
+    args = args:sub(1, -2) --Remove trailing comma
+
+    return " (" .. args .. ")"
+end
+
+function getTableSize(t)
+    local count = 0
+    for _, __ in pairs(t) do
+        count = count + 1
+    end
+    return count
 end
 
 
-function replaceVariableInCommand(var, finalCommand)
-    vim.ui.input({ prompt = "ProjectLaunch: Enter argument " .. var .. ": "}, function(cmd)
-        finalCommand = string.gsub(finalCommand, var, cmd)
+function setRuntimeVarViaPrompt(i, command)
+    substitutionString = "$" .. i
+    vim.ui.input({ prompt = "ProjectLaunch: Enter argument " .. substitutionString .. " for\n" .. command .. "\n:"}, function(input)
+        runtimeVars[i] = input 
     end)
-
-    return finalCommand
 end
 
 return Job
-
