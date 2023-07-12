@@ -41,12 +41,32 @@ interface ProjectLaunchConfig {
         { "name": "Build server", "cmd": "npm run build-server:dev", "groups": ["dev"] },
         { "name": "Lint frontend", "cmd": "npm run lint-frontend:dev", "groups": ["lint", "test"] },
         { "name": "Lint server", "cmd": "npm run lint-server:dev", "groups": ["lint", "test"] },
+        { "name": "Command with runtime var", "cmd": "echo $1" },
         { "name": "Test", "cmd": "npm test", "groups": ["test"] }
     ]
 }
 ```
+### Runtime Launch Variables
+Sometimes you may need to frequently run the same type of command where only one argument changes.
+####Examples:
+```
+node ./install.js --env test
+```
+```
+node ./install.js --env dev
+```
+```
+node ./install.js --env prod
+```
+Instead of creating three separate entries in your .projectlaunch.json config, you can put a variable in one command like so.
+```
+{ "name": "Install with runtime var", "cmd": "node ./install.js --env $1" }
+```
+When you start a command that contains $1, Project Launch will prompt you to enter the value of the variable before it runs the command. 
+####Multiple Variables
+Project Launch supports prompting and setting up to five runtime variables ($1, $2, $3, $4, $5).
 
-### Example configuration
+### Example lua configuration
 
 ```lua
 
