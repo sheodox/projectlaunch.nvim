@@ -1,16 +1,15 @@
 local config_utils = require("projectlaunch.config_utils")
 local win = require("projectlaunch.win")
+local runtimeVarManager = require("projectlaunch.runtime_variable_manager")
 local api = vim.api
 
 local term_name_prefix = "ProjectLaunch terminal - "
 
 local Job = {}
-runtimeVars = {}
 
 function Job:new(command, opts)
-    runtimeVars = {}
-    local finalCommand = generateCommand(command)
-	
+	local finalCommand = runtimeVarManager.interpolate(command)
+
 	local temp_win, buf = win.create_temp_window()
 	vim.opt_local.spell = false
 
@@ -25,7 +24,7 @@ function Job:new(command, opts)
 		-- duplicating the name lets commands be edited and
 		-- jobs won't get the updated command until it's rerun,
 		-- so it won't look like the newly edited command had been run automatically
-		name = generateJobName(command),
+		name = runtimeVarManager.generateJobName(command),
 		cmd = finalCommand,
 		job_id = nil,
 		buf = buf,
@@ -58,58 +57,6 @@ end
 
 function Job:kill()
 	vim.fn.jobstop(self.job_id)
-end
-
-function generateCommand(originalCommand) 
-	local finalCommand = originalCommand.cmd 
-
-    for i = 1,5,1
-    do
-        local substitutionString = "$" .. i
-
-        if string.find(originalCommand.cmd, substitutionString) then
-            setRuntimeVarViaPrompt(i, finalCommand)
-            finalCommand = string.gsub(finalCommand, substitutionString, runtimeVars[i])
-        end
-    end
-
-    return finalCommand
-end
-
-function generateJobName(command)
-    if(getTableSize(runtimeVars) > 0) then
-       return command.name .. createArgPrefix()
-    end 
-
-    return command.name
-end
-
-function createArgPrefix()
-    local args = ""
-
-    for key, value in pairs(runtimeVars) do
-        args = args .. value .. "," 
-    end 
-
-    args = args:sub(1, -2) --Remove trailing comma
-
-    return " (" .. args .. ")"
-end
-
-function getTableSize(t)
-    local count = 0
-    for _, __ in pairs(t) do
-        count = count + 1
-    end
-    return count
-end
-
-
-function setRuntimeVarViaPrompt(i, command)
-    substitutionString = "$" .. i
-    vim.ui.input({ prompt = "ProjectLaunch: Enter argument " .. substitutionString .. " for\n" .. command .. "\n:"}, function(input)
-        runtimeVars[i] = input 
-    end)
 end
 
 return Job
