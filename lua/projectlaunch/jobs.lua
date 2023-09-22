@@ -8,7 +8,8 @@ local term_name_prefix = "ProjectLaunch terminal - "
 local Job = {}
 
 function Job:new(command, opts)
-	local finalCommand = runtimeVarManager.interpolate(command)
+	local runtimeVars = runtimeVarManager.prompt(command)
+	local finalCommand = runtimeVarManager.interpolate(command, runtimeVars)
 
 	local temp_win, buf = win.create_temp_window()
 	vim.opt_local.spell = false
@@ -24,7 +25,7 @@ function Job:new(command, opts)
 		-- duplicating the name lets commands be edited and
 		-- jobs won't get the updated command until it's rerun,
 		-- so it won't look like the newly edited command had been run automatically
-		name = runtimeVarManager.generateJobName(command),
+		name = runtimeVarManager.generateJobName(command, runtimeVars),
 		cmd = finalCommand,
 		job_id = nil,
 		buf = buf,
