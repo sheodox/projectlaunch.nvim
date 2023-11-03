@@ -62,7 +62,7 @@ Instead of creating three separate entries in your .projectlaunch.json config, y
 ```
 { "name": "Install with runtime var", "cmd": "node ./install.js --env $1" }
 ```
-When you start a command that contains $1, Project Launch will prompt you to enter the value of the variable before it runs the command. 
+When you start a command that contains $1, Project Launch will prompt you to enter the value of the variable before it runs the command.
 ####Multiple Variables
 Project Launch supports prompting and setting up to five runtime variables ($1, $2, $3, $4, $5).
 
@@ -82,6 +82,10 @@ projectlaunch.setup({
     config_path = ".projectlaunch.json",
     -- automatically reload config after loading a session or updating your ProjectLaunch config file
     auto_reload_config = true,
+    -- set a default width for menu window
+    max_menu_width = 50,
+    -- set a default height for menu window
+    max_menu_height = 30,
 })
 
 -- open the main menu
