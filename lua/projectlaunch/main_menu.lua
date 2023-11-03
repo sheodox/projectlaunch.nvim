@@ -8,8 +8,8 @@ local term = require("projectlaunch.term")
 
 local main_menu = nil
 local launch_menu = nil
-local max_menu_width = 50
-local max_menu_height = 30
+local max_menu_width = options.get().max_menu_width
+local max_menu_height = options.get().max_menu_height
 
 function M.launch_group(group)
 	local cfg = config.get_project_config()
