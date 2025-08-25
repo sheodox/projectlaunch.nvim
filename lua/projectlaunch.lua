@@ -27,6 +27,9 @@ M.setup = function(opts)
 	options.override(opts)
 end
 
+--Edit project launch config in a buffer. Generate the config with a default if the file does not exist.
+M.edit_config = config.edit_config
+
 -- pass a command (as a string) to add to the launch menu
 M.add_custom_command = config.add_custom_command
 

@@ -48,7 +48,7 @@ interface ProjectLaunchConfig {
 ```
 ### Runtime Launch Variables
 Sometimes you may need to frequently run the same type of command where only one argument changes.
-####Examples:
+#### Examples:
 ```
 node ./install.js --env test
 ```
@@ -63,7 +63,7 @@ Instead of creating three separate entries in your .projectlaunch.json config, y
 { "name": "Install with runtime var", "cmd": "node ./install.js --env $1" }
 ```
 When you start a command that contains $1, Project Launch will prompt you to enter the value of the variable before it runs the command. 
-####Multiple Variables
+#### Multiple Variables
 Project Launch supports prompting and setting up to five runtime variables ($1, $2, $3, $4, $5).
 
 ### Example lua configuration
@@ -99,6 +99,9 @@ vim.keymap.set('n', "<leader>lm", projectlaunch.show_prev, {noremap = true, expr
 
 -- restart the command running in the currently open split terminal
 vim.keymap.set('n', "<leader>lr", projectlaunch.restart_command_in_split, {noremap = true, expr = false, buffer = false})
+
+-- edit project launch config in a buffer. Generates the config with a default if the file does not exist.
+vim.keymap.set('n', "<leader>le", projectlaunch.edit_config, {noremap = true, expr = false, buffer = false})
 
 -- add custom commands programmatically. you can write your own lua code to add a list of commands
 -- from a tool you use that projectlaunch.nvim doesn't support. or type part of a long command that

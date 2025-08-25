@@ -13,12 +13,16 @@ local alt_configs = {
 local cached_config = nil
 local cached_ecosystem_specific_configs = nil
 
+local function get_config_path()
+	return path.join(config_utils.get_project_root(), options.get().config_path)
+end
+
 function M.get_project_config()
 	if cached_config ~= nil then
 		return cached_config
 	end
 
-	local config_path = path.join(config_utils.get_project_root(), options.get().config_path)
+	local config_path = get_config_path()
 	local ok, config = pcall(config_utils.read_json_file, config_path)
 
 	if ok then
@@ -106,5 +110,61 @@ api.nvim_create_autocmd("BufWritePost", {
 	pattern = "*.json",
 	callback = reload_config,
 })
+
+-- validate config file exists and approximates format
+--
+-- File validation is purposely very loose so it is typo resistant.
+-- Loose validation prevents the overwriting of user commands.
+local function file_approximates_format()
+	local approximates_expected_format = nil
+
+	local file_readable = vim.fn.filereadable(get_config_path())
+
+	if file_readable == 0 then
+		vim.notify("Config doesn't exist", vim.log.levels.WARN)
+	else
+		local lines = vim.fn.readfile(get_config_path())
+		local content = table.concat(lines, "\n")
+
+		local has_commands = string.find(content, 'commands"')
+		local has_curly_brace = string.find(content, "{")
+		local has_name = string.find(content, '"name"')
+		local has_cmd = string.find(content, '"cmd"')
+
+		if has_commands and has_curly_brace and has_name and has_cmd then
+			approximates_expected_format = 1
+		end
+	end
+
+	return approximates_expected_format
+end
+
+local function create_default_launch_JSON()
+	local default_config = {
+		commands = {
+			{
+				name = "default",
+				cmd = "echo hello world",
+			},
+		},
+	}
+
+	local default_json = vim.fn.json_encode(default_config)
+
+	vim.notify("Writing default launch JSON", vim.log.levels.INFO)
+	vim.fn.writefile({ default_json }, get_config_path())
+end
+
+local function open_launch_file()
+	if not file_approximates_format() then
+		create_default_launch_JSON()
+	end
+
+	vim.cmd.edit(get_config_path())
+end
+
+function M.edit_config()
+	open_launch_file()
+end
 
 return M
